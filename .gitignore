@@ -1,0 +1,38 @@
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+## MAC OS
+.DS_Store
+
+## TEXTMATE
+*.tmproj
+tmtags
+
+## EMACS
+*~
+\#*
+.\#*
+
+## VIM
+*.swp
+
+## Sublime Text
+*.sublime-*
+
+## PROJECT::GENERAL
+log
+logs
+node_modules
+npm-debug.log
+pids
+results
+tmp
+
+## PROJECT::SPECIFIC
+config/configuration.json

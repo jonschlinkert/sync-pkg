@@ -1,0 +1,46 @@
+{
+  "name": "sync-pkg",
+  "version": "0.1.0",
+  "description": "Minimalist CLI to sync only basic properties from package.json to bower.json.",
+  "homepage": "https://github.com/jonschlinkert/sync-pkg",
+  "author": {
+    "name": "Jon Schlinkert",
+    "url": "https://github.com/jonschlinkert"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jonschlinkert/sync-pkg.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/sync-pkg/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jonschlinkert/sync-pkg/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "index.js",
+  "bin": {
+    "sync": "./cli.js"
+  },
+  "dependencies": {
+    "lodash": "~2.4.1",
+    "fs-utils": "~0.1.11",
+    "commander": "~2.1.0",
+    "prompt": "~0.2.12",
+    "chalk": "~0.4.0",
+    "findup-sync": "~0.1.2",
+    "config-file": "~0.1.2",
+    "cwd": "~0.2.2"
+  },
+  "devDependencies": {
+    "chai": "~1.8.1",
+    "mocha": "~1.17.1"
+  },
+  "keywords": [
+    "foo",
+    "bar",
+    "bar"
+  ]
+}
