@@ -1,6 +1,6 @@
 {
   "name": "sync-pkg",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Minimalist CLI to sync only basic properties from package.json to bower.json.",
   "homepage": "https://github.com/jonschlinkert/sync-pkg",
   "author": {

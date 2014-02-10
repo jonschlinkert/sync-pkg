@@ -2,18 +2,17 @@
 
 > Minimalist CLI to sync only basic properties from package.json to bower.json
 
-If you find a bug or have a feature request, [please create an issue](https://github.com/helpers/sync-pkg/issues).
+If you find a bug or have a feature request, [please create an issue](https://github.com/jonschlinkert/sync-pkg/issues).
 
-## Quickstart
+## Install
 
-### Install with [npm](npmjs.org):
+### [npm](npmjs.org):
 
 ```
 npm i -g sync-pkg --save
 ```
 
 ## Usage
-
 
 ### cli
 
