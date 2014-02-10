@@ -7,7 +7,6 @@
  */
 
 // Dependencies
-const chalk  = require('chalk');
 const file   = require('fs-utils');
 const _      = require('lodash');
 const cwd    = require('cwd');
@@ -44,7 +43,7 @@ var config = module.exports = function(options) {
   var bowerProps = _.omit(_.extend(config.bower, opts), omissions);
 
   if (!_.isString(pkg.main) && opts.requireMain === true) {
-    console.warn(chalk.warn('>> package.json is missing a "main" property.'));
+    console.warn('>> package.json is missing a "main" property.');
   }
 
   // Write bower.json to disk
