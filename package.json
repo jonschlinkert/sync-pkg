@@ -31,7 +31,8 @@
     "sync": "./cli.js"
   },
   "scripts": {
-    "test": "mocha test/**/*_test.js"
+    "test": "mocha test/**/*_test.js",
+    "jshint": "jshint --exclude node_modules **/*.js"
   },
   "dependencies": {
     "lodash": "~2.4.1",
@@ -41,7 +42,8 @@
   },
   "devDependencies": {
     "mocha": "^1.18.2",
-    "chai": "^1.9.1"
+    "chai": "^1.9.1",
+    "jshint": "^2.4.4"
   },
   "keywords": [
     "package.json",
