@@ -30,11 +30,18 @@
   "bin": {
     "sync": "./cli.js"
   },
+  "scripts": {
+    "test": "mocha test/**/*_test.js"
+  },
   "dependencies": {
     "lodash": "~2.4.1",
     "fs-utils": "~0.3.0",
     "cwd": "~0.2.2",
     "chalk": "~0.4.0"
+  },
+  "devDependencies": {
+    "mocha": "^1.18.2",
+    "chai": "^1.9.1"
   },
   "keywords": [
     "package.json",
