@@ -7,6 +7,12 @@
     "name": "Jon Schlinkert",
     "url": "https://github.com/jonschlinkert"
   },
+  "contributors": [
+    {
+      "name": "Anders D. Johnson",
+      "url": "https://github.com/adjohnson916"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/jonschlinkert/sync-pkg.git"
