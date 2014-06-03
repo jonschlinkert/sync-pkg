@@ -7,6 +7,12 @@
     "name": "Jon Schlinkert",
     "url": "https://github.com/jonschlinkert"
   },
+  "contributors": [
+    {
+      "name": "Anders D. Johnson",
+      "url": "https://github.com/adjohnson916"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/jonschlinkert/sync-pkg.git"
@@ -24,11 +30,20 @@
   "bin": {
     "sync": "./cli.js"
   },
+  "scripts": {
+    "test": "mocha test/**/*_test.js",
+    "jshint": "jshint --exclude node_modules **/*.js"
+  },
   "dependencies": {
     "lodash": "~2.4.1",
     "fs-utils": "~0.3.0",
     "cwd": "~0.2.2",
     "chalk": "~0.4.0"
+  },
+  "devDependencies": {
+    "mocha": "^1.18.2",
+    "chai": "^1.9.1",
+    "jshint": "^2.4.4"
   },
   "keywords": [
     "package.json",

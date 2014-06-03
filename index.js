@@ -34,6 +34,17 @@ var config = module.exports = function(options) {
     opts[key] = pkg[key];
   });
 
+  // Sync authors
+  var authors = config.toAuthors(pkg);
+  if (authors) {
+    opts.authors = authors;
+  }
+
+  // Format the 'main' property as an array for bower.json
+  if (pkg.main || opts.main) {
+    opts.main = _.union([], [pkg.main], (opts.main || ['']));
+  }
+
   // Format the 'main' property as an array for bower.json
   if (pkg.main || opts.main) {
     opts.main = _.union([], [pkg.main], (opts.main || ['']));
@@ -56,6 +67,60 @@ var config = module.exports = function(options) {
     // Write the alternate JSON file
     file.writeJSONSync(opts.alt, altProps);
   }
+};
+
+/**
+ * Convert a Bower author to an npm person.
+ * 
+ * @see https://github.com/bower/bower.json-spec#authors
+ * @see https://www.npmjs.org/doc/json.html#people-fields-author-contributors
+ * 
+ * @param  {String|Array} npmAuthor A Bower author.
+ * @return {?String|Array}          An npm person.
+ */
+config.toAuthor = function (npmAuthor) {
+  var author;
+  if (_.isPlainObject(npmAuthor)) {
+    author = {};
+    if (npmAuthor.name) {
+      author.name = npmAuthor.name;
+    }
+    if (npmAuthor.email) {
+      author.email = npmAuthor.email;
+    }
+    if (npmAuthor.url) {
+      author.homepage = npmAuthor.url;
+    }
+  }
+  else if (_.isString(npmAuthor)) {
+    author = npmAuthor;
+  }
+  return author;
+};
+
+/**
+ * Sync npm's 'author' and 'contributors' to Bower's 'authors'.
+ * 
+ * @param  {Object} pkg An npm package object.
+ * @return {?Array}     An array of authors, or null.
+ */
+config.toAuthors = function (pkg) {
+  pkg = pkg || {};
+  var author;
+  var authors = [];
+  if (pkg.author) {
+    author = config.toAuthor(pkg.author);
+    if (author) {
+      authors.push(author);
+    }
+  }
+  if (pkg.contributors && _.isArray(pkg.contributors)) {
+    pkg.contributors.forEach(function (contributor) {
+      contributor = config.toAuthor(contributor);
+      authors.push(contributor);
+    });
+  }
+  return authors.length > 0 ? authors : null;
 };
 
 config.bower = require(cwd('bower.json'));
