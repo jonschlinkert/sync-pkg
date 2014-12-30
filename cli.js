@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 
-const chalk = require('chalk');
-const cwd = require('cwd');
+'use strict';
 
-// Why more?
-require('./')();
+var argv = require('minimist')(process.argv.slice(2));
+var symbol = require('log-symbols');
+var writeJson = require('write-json');
+var sync = require('./');
 
-if(require(cwd('package.json')).version === require(cwd('bower.json')).version) {
-  var v = require(cwd('bower.json')).version;
-  console.log(chalk.green('>> Success.'), 'updated bower.json to ' + chalk.green(' v' + v));
-}
+var patterns = argv.p || argv.patterns  || [];
+writeJson('bower.json', sync(patterns));
+
+console.log();
+console.log('  updated bower.json ' + symbol.success);
+console.log();

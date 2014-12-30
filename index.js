@@ -1,128 +1,142 @@
-/**
- * sync-pkg
- * http://github.com/jonschlinkert/sync-pkg
- *
- * Copyright (c) 2014 Jon Schlinkert, contributors
- * Licensed under the MIT license.
- */
+#!/usr/bin/env node
 
-// Dependencies
-const file   = require('fs-utils');
-const _      = require('lodash');
-const cwd    = require('cwd');
+'use strict';
+
+var fs = require('fs');
+var cwd = require('cwd');
+var typeOf = require('kind-of');
+var extend = require('extend-shallow');
+var filter = require('filter-object');
+var omitEmpty = require('omit-empty');
+var writeJson = require('write-json');
 
 // If bower.json doesn't exist yet, add one.
-if (!file.exists('bower.json')) {
-  file.writeJSONSync('bower.json', {});
+if (!fs.existsSync('bower.json')) {
+  writeJson('bower.json', {});
 }
 
-var config = module.exports = function(options) {
-  options = options || {};
-  var pkg = config.pkg || options.pkg;
+/**
+ * Package files
+ */
 
-  var opts = _.defaults(options, {
-    name: pkg.name,
-    version: pkg.version,
-    main: [pkg.main],
-    include: [],
-    exclude: [],
-    requireMain: config.requireMain || true
-  });
+var bower = require(cwd('bower.json'));
+var pkg = require('load-pkg');
 
-  // Sync any properties listed in the "include" array.
-  opts.include.forEach(function(key) {
-    opts[key] = pkg[key];
-  });
+/**
+ * Expose `config`
+ */
 
-  // Sync authors
-  var authors = config.toAuthors(pkg);
+module.exports = sync;
+
+/**
+ * Sync properties from package.json to bower.json.
+ *
+ * @param  {Object} options
+ * @return {Object}
+ */
+
+function sync(patterns, options) {
+  if (typeOf(patterns) === 'object') {
+    options = patterns;
+    patterns = null;
+  }
+
+  var opts = extend({}, options);
+  patterns = patterns || ['*'];
+
+  // normalize `main` to an array
+  pkg.main = arrayify(pkg.main);
+
+  // normalize `authors` to bower.json format
+  var authors = toAuthors(pkg);
   if (authors) {
-    opts.authors = authors;
+    pkg.authors = authors;
   }
 
-  // Format the 'main' property as an array for bower.json
-  if (pkg.main || opts.main) {
-    opts.main = _.union([], [pkg.main], (opts.main || ['']));
-  }
+  delete pkg.version;
+  var res = keys(pkg, patterns, opts);
+  return extend(bower, res);
+}
 
-  // Format the 'main' property as an array for bower.json
-  if (pkg.main || opts.main) {
-    opts.main = _.union([], [pkg.main], (opts.main || ['']));
-  }
+function keys(o, patterns, options) {
+  var res = filter(o, [
+    'name',        // (required)
+    'version',     // (used, but bower ignores this)
+    'description', // (recommended)
+    'repository',
+    'license',     // (recommended)
+    'homepage',
+    'authors',
+    'main',        // (recommended)
+    'ignore',      // (recommended)
+    'dependencies',
+    'devDependencies',
+    'keywords'    // (recommended)
+  ].concat(patterns), options);
+  return omitEmpty(res);
+}
 
-  var omissions = _.union(config.exclusions, opts.exclude);
-  var bowerProps = _.omit(_.extend(config.bower, opts), omissions);
+/**
+ * Coerce `val` to an array
+ *
+ * @param  {*} val
+ * @return {Array}
+ */
 
-  if (!_.isString(pkg.main) && opts.requireMain === true) {
-    console.warn('>> package.json is missing a "main" property.');
-  }
-
-  // Write bower.json to disk
-  file.writeJSONSync('bower.json', bowerProps);
-
-  // Specify another JSON file, such as plugin.jquery.json
-  if(opts.alt) {
-    var alt = file.readJSONSync(opts.alt);
-    var altProps = _.omit(_.extend(alt, opts), _.union(omissions, ['main']));
-    // Write the alternate JSON file
-    file.writeJSONSync(opts.alt, altProps);
-  }
-};
+function arrayify(val) {
+  val = !Array.isArray(val) ? [val] : val;
+  return val.filter(Boolean);
+}
 
 /**
  * Convert a Bower author to an npm person.
- * 
- * @see https://github.com/bower/bower.json-spec#authors
- * @see https://www.npmjs.org/doc/json.html#people-fields-author-contributors
- * 
- * @param  {String|Array} npmAuthor A Bower author.
- * @return {?String|Array}          An npm person.
+ *
+ * See: <https://github.com/bower/bower.json-spec#authors>
+ * See: <https://www.npmjs.org/doc/json.html#people-fields-author-contributors>
+ *
+ * @param  {String|Array} `author` A Bower author.
+ * @return {String|Array}          An npm person.
  */
-config.toAuthor = function (npmAuthor) {
-  var author;
-  if (_.isPlainObject(npmAuthor)) {
-    author = {};
-    if (npmAuthor.name) {
-      author.name = npmAuthor.name;
+
+function toAuthor(author) {
+  if (typeof author === 'object') {
+    var res = author;
+    if (author.url) {
+      res.homepage = author.url;
+      delete res.url;
     }
-    if (npmAuthor.email) {
-      author.email = npmAuthor.email;
-    }
-    if (npmAuthor.url) {
-      author.homepage = npmAuthor.url;
-    }
+    return res;
   }
-  else if (_.isString(npmAuthor)) {
-    author = npmAuthor;
+
+  if (typeof author === 'string') {
+    return author;
   }
-  return author;
-};
+}
 
 /**
- * Sync npm's 'author' and 'contributors' to Bower's 'authors'.
- * 
- * @param  {Object} pkg An npm package object.
- * @return {?Array}     An array of authors, or null.
+ * Convert a npm `author` field or and/and `contributors`
+ * field to a Bower `authors` field
+ *
+ * @param {Object} `pkg` package.json object
+ * @return {Array}  An array of authors or null.
  */
-config.toAuthors = function (pkg) {
-  pkg = pkg || {};
-  var author;
+
+function toAuthors(pkg, options) {
+  var opts = options || {contributors: true};
   var authors = [];
+
   if (pkg.author) {
-    author = config.toAuthor(pkg.author);
-    if (author) {
-      authors.push(author);
-    }
+    authors.push(toAuthor(pkg.author));
   }
-  if (pkg.contributors && _.isArray(pkg.contributors)) {
+
+  if (opts.contributors && pkg.contributors && Array.isArray(pkg.contributors)) {
     pkg.contributors.forEach(function (contributor) {
-      contributor = config.toAuthor(contributor);
-      authors.push(contributor);
+      authors.push(toAuthor(contributor));
     });
   }
-  return authors.length > 0 ? authors : null;
-};
+  return authors;
+}
 
-config.bower = require(cwd('bower.json'));
-config.pkg = require(cwd('package.json'));
-config.exclusions = ['exclude', 'include', 'alt', 'requireMain'];
+
+module.exports.toAuthor = toAuthor;
+module.exports.toAuthors = toAuthors;
