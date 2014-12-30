@@ -1,6 +1,6 @@
 {
   "name": "sync-pkg",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Minimalist CLI to sync only basic properties from package.json to bower.json.",
   "homepage": "https://github.com/jonschlinkert/sync-pkg",
   "author": {
@@ -25,8 +25,9 @@
     "url": "https://github.com/jonschlinkert/sync-pkg/blob/master/LICENSE"
   },
   "main": "index.js",
+  "preferGlobal": true,
   "bin": {
-    "sync": "./cli.js"
+    "sync-pkg": "./cli.js"
   },
   "scripts": {
     "test": "mocha -R spec",
