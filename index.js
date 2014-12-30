@@ -54,14 +54,12 @@ function sync(patterns, options) {
   }
 
   delete pkg.version;
-  var res = keys(pkg, patterns, opts);
-  return extend(bower, res);
+  return keys(pkg, patterns, opts);
 }
 
 function keys(o, patterns, options) {
   var res = filter(o, [
     'name',        // (required)
-    'version',     // (used, but bower ignores this)
     'description', // (recommended)
     'repository',
     'license',     // (recommended)
