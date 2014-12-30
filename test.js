@@ -1,6 +1,7 @@
-var syncPkg = require('..');
-var chai = require('chai');
-var assert = chai.assert;
+'use strict';
+
+var syncPkg = require('./');
+var assert = require('assert');
 
 describe('toAuthor', function () {
   it('should convert author string', function () {
