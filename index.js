@@ -3,9 +3,7 @@
 'use strict';
 
 var fs = require('fs');
-var cwd = require('cwd');
 var typeOf = require('kind-of');
-var extend = require('extend-shallow');
 var filter = require('filter-object');
 var omitEmpty = require('omit-empty');
 var writeJson = require('write-json');
@@ -19,57 +17,56 @@ if (!fs.existsSync('bower.json')) {
  * Package files
  */
 
-var bower = require(cwd('bower.json'));
 var pkg = require('load-pkg');
-
-/**
- * Expose `config`
- */
-
-module.exports = sync;
 
 /**
  * Sync properties from package.json to bower.json.
  *
- * @param  {Object} options
+ * @param  {String} `patterns` Glob patterns for matching keys.
+ * @param  {Object} `options`
  * @return {Object}
  */
 
-function sync(patterns, options) {
+function sync(config, patterns, options) {
+  if (typeOf(config) !== 'object') {
+    patterns = config;
+    options = patterns;
+    config = pkg;
+  }
+
   if (typeOf(patterns) === 'object') {
     options = patterns;
     patterns = null;
   }
-
-  var opts = extend({}, options);
+  var opts = options || {};
   patterns = patterns || ['*'];
 
   // normalize `main` to an array
-  pkg.main = arrayify(pkg.main);
+  config.main = arrayify(config.main);
 
   // normalize `authors` to bower.json format
-  var authors = toAuthors(pkg);
+  var authors = toAuthors(config);
   if (authors) {
-    pkg.authors = authors;
+    config.authors = authors;
   }
 
-  delete pkg.version;
-  return keys(pkg, patterns, opts);
+  delete config.version;
+  return keys(config, patterns, opts);
 }
 
 function keys(o, patterns, options) {
   var res = filter(o, [
-    'name',        // (required)
-    'description', // (recommended)
+    'name', // required
+    'description', // recommended
     'repository',
-    'license',     // (recommended)
+    'license', // recommended
     'homepage',
     'authors',
-    'main',        // (recommended)
-    'ignore',      // (recommended)
+    'main', // recommended
+    'ignore', // recommended
     'dependencies',
     'devDependencies',
-    'keywords'    // (recommended)
+    'keywords' // recommended
   ].concat(patterns), options);
   return omitEmpty(res);
 }
@@ -135,6 +132,15 @@ function toAuthors(pkg, options) {
   return authors;
 }
 
+/**
+ * Expose `sync`
+ */
+
+module.exports = sync;
+
+/**
+ * Expose author methods
+ */
 
 module.exports.toAuthor = toAuthor;
 module.exports.toAuthors = toAuthors;
