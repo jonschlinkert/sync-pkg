@@ -1,6 +1,6 @@
 {
   "name": "sync-pkg",
-  "description": "Minimalist CLI to sync only basic properties from package.json to bower.json.",
+  "description": "CLI to sync only basic properties from package.json to bower.json.",
   "repository": {
     "type": "git",
     "url": "https://github.com/jonschlinkert/sync-pkg.git"
@@ -24,14 +24,12 @@
     "index.js"
   ],
   "dependencies": {
-    "cwd": "^0.4.0",
-    "extend-shallow": "^0.2.0",
-    "filter-object": "^1.0.0",
-    "kind-of": "^0.1.2",
-    "load-pkg": "^1.0.0",
-    "log-symbols": "^1.0.1",
-    "minimist": "^1.1.0",
-    "omit-empty": "^0.3.0",
+    "filter-object": "^1.1.2",
+    "kind-of": "^1.1.0",
+    "load-pkg": "^1.1.3",
+    "log-symbols": "^1.0.2",
+    "minimist": "^1.1.1",
+    "omit-empty": "^0.3.1",
     "write-json": "^0.1.0"
   },
   "keywords": [

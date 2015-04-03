@@ -1,7 +1,7 @@
 {
   "name": "sync-pkg",
-  "version": "0.3.0",
-  "description": "Minimalist CLI to sync only basic properties from package.json to bower.json.",
+  "description": "CLI to sync only basic properties from package.json to bower.json.",
+  "version": "0.3.1",
   "homepage": "https://github.com/jonschlinkert/sync-pkg",
   "author": {
     "name": "Jon Schlinkert",
@@ -24,28 +24,27 @@
     "type": "MIT",
     "url": "https://github.com/jonschlinkert/sync-pkg/blob/master/LICENSE"
   },
+  "files": [
+    "index.js",
+    "cli.js"
+  ],
   "main": "index.js",
   "preferGlobal": true,
   "bin": {
-    "sync-pkg": "./cli.js"
+    "sync-pkg": "cli.js"
   },
   "scripts": {
-    "test": "mocha -R spec",
-    "docs": "update && license && npmignore && deps && verb",
-    "all": "npm run test && npm run docs"
+    "test": "mocha"
   },
   "dependencies": {
-    "cwd": "^0.4.0",
-    "extend-shallow": "^0.2.0",
-    "filter-object": "^1.0.0",
-    "kind-of": "^0.1.2",
-    "load-pkg": "^1.0.0",
-    "log-symbols": "^1.0.1",
-    "minimist": "^1.1.0",
-    "omit-empty": "^0.3.0",
+    "filter-object": "^1.1.2",
+    "kind-of": "^1.1.0",
+    "load-pkg": "^1.1.3",
+    "log-symbols": "^1.0.2",
+    "minimist": "^1.1.1",
+    "omit-empty": "^0.3.1",
     "write-json": "^0.1.0"
   },
-  "devDependencies": {},
   "keywords": [
     "package.json",
     "bower.json",
