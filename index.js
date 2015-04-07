@@ -8,11 +8,6 @@ var filter = require('filter-object');
 var omitEmpty = require('omit-empty');
 var writeJson = require('write-json');
 
-// If bower.json doesn't exist yet, add one.
-if (!fs.existsSync('bower.json')) {
-  writeJson('bower.json', {});
-}
-
 /**
  * Package files
  */
@@ -38,8 +33,14 @@ function sync(config, patterns, options) {
     options = patterns;
     patterns = null;
   }
+
   var opts = options || {};
   patterns = patterns || ['*'];
+
+  // If bower.json doesn't exist yet, add one.
+  if (!fs.existsSync('bower.json') && opts.nobower !== true) {
+    writeJson('bower.json', {});
+  }
 
   // normalize `main` to an array
   config.main = arrayify(config.main);
