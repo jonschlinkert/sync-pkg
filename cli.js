@@ -8,7 +8,7 @@ var writeJson = require('write-json');
 var sync = require('./');
 
 var patterns = argv.p || argv.patterns  || [];
-writeJson('bower.json', sync(patterns));
+writeJson('bower.json', sync(patterns, argv));
 
 console.log();
 console.log('  updated bower.json ' + symbol.success);
