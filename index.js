@@ -24,8 +24,8 @@ var pkg = require('load-pkg');
 
 function sync(config, patterns, options) {
   if (typeOf(config) !== 'object') {
-    patterns = config;
     options = patterns;
+    patterns = config;
     config = pkg;
   }
 
@@ -69,7 +69,8 @@ function keys(o, patterns, options) {
     'devDependencies',
     'keywords' // recommended
   ].concat(patterns), options);
-  return omitEmpty(res);
+  res = options.empty ? res : omitEmpty(res);
+  return res;
 }
 
 /**
