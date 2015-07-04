@@ -7,6 +7,7 @@ var typeOf = require('kind-of');
 var filter = require('filter-object');
 var omitEmpty = require('omit-empty');
 var writeJson = require('write-json');
+var extend = require('extend-shallow');
 
 /**
  * Package files
@@ -37,8 +38,11 @@ function sync(config, patterns, options) {
   var opts = options || {};
   patterns = patterns || ['*'];
 
+  opts.bowerFile = 'bower.json';
+  opts.bowerFileExists = fs.existsSync(opts.bowerFile);
+
   // If bower.json doesn't exist yet, add one.
-  if (!fs.existsSync('bower.json') && opts.nobower !== true) {
+  if (!opts.bowerFileExists && opts.nobower !== true) {
     writeJson('bower.json', {});
   }
 
@@ -68,7 +72,14 @@ function keys(o, patterns, options) {
     'devDependencies',
     'keywords' // recommended
   ].concat(patterns), options);
-  return omitEmpty(res);
+  res = omitEmpty(res);
+
+  if (options.bowerFileExists && options.extend) {
+    var existing = JSON.parse(fs.readFileSync(options.bowerFile));
+    res = extend(existing, res);
+  }
+
+  return res;
 }
 
 /**
