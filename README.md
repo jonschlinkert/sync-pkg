@@ -68,6 +68,10 @@ $ npm i -d && npm test
 + [github/jonschlinkert](https://github.com/jonschlinkert)
 + [twitter/jonschlinkert](http://twitter.com/jonschlinkert)
 
+## Contributors
+
+* [Anders D. Johnson](https://github.com/adjohnson916)
+
 ## License
 
 Copyright © 2014-2015 Jon Schlinkert
