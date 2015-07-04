@@ -49,5 +49,8 @@
     "package.json",
     "bower.json",
     "sync"
-  ]
+  ],
+  "devDependencies": {
+    "verb": "git://github.com/verbose/verb"
+  }
 }
