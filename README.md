@@ -41,6 +41,29 @@ var sync = require('sync-pkg');
 
 // omit fields using glob patterns
 sync(['!description', '!foo*']);
+
+// extend existing bower.json
+sync(null, {
+  extend: true
+});
+
+// allow empty fields
+sync(null, {
+  empty: true
+});
+```
+
+### CLI
+
+```sh
+// omit fields using glob patterns
+sync-pkg -p "!description" -p "!foo*"
+
+// extend existing bower.json
+sync-pkg --extend
+
+// allow empty fields
+sync-pkg --empty
 ```
 
 ## Related
