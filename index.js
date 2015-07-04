@@ -72,7 +72,7 @@ function keys(o, patterns, options) {
     'devDependencies',
     'keywords' // recommended
   ].concat(patterns), options);
-  res = omitEmpty(res);
+  res = options.empty ? res : omitEmpty(res);
 
   if (options.bowerFileExists && options.extend) {
     var existing = JSON.parse(fs.readFileSync(options.bowerFile));
