@@ -24,7 +24,7 @@ var pkg = require('load-pkg');
  */
 
 function sync(config, patterns, options) {
-  if (typeOf(config) !== 'object') {
+  if (typeOf(config) !== 'object' || ! config) {
     options = patterns;
     patterns = config;
     config = pkg;
