@@ -4,6 +4,7 @@
 
 var fs = require('fs');
 var typeOf = require('kind-of');
+var arrayify = require('arrayify-compact');
 var filter = require('filter-object');
 var omitEmpty = require('omit-empty');
 var writeJson = require('write-json');
@@ -13,7 +14,7 @@ var extend = require('extend-shallow');
  * Package files
  */
 
-var pkg = require('load-pkg');
+var pkg = require('load-pkg')(process.cwd());
 
 /**
  * Sync properties from package.json to bower.json.
@@ -43,7 +44,7 @@ function sync(config, patterns, options) {
 
   // If bower.json doesn't exist yet, add one.
   if (!opts.bowerFileExists && opts.nobower !== true) {
-    writeJson('bower.json', {});
+    writeJson.sync('bower.json', {});
   }
 
   // normalize `main` to an array
@@ -55,43 +56,31 @@ function sync(config, patterns, options) {
     config.authors = authors;
   }
 
-  return keys(config, patterns, opts);
+  return bowerKeys(config, patterns, opts);
 }
 
-function keys(o, patterns, options) {
-  var res = filter(o, [
-    'name', // required
+function bowerKeys(config, patterns, options) {
+  var res = filter(config, [
+    'name',        // required
     'description', // recommended
     'repository',
-    'license', // recommended
+    'license',     // recommended
     'homepage',
     'authors',
-    'main', // recommended
-    'ignore', // recommended
+    'main',        // recommended
+    'ignore',      // recommended
     'dependencies',
     'devDependencies',
-    'keywords' // recommended
+    'keywords'     // recommended
   ].concat(patterns), options);
   res = options.empty ? res : omitEmpty(res);
 
   if (options.bowerFileExists && options.extend) {
-    var existing = JSON.parse(fs.readFileSync(options.bowerFile));
+    var str = fs.readFileSync(options.bowerFile);
+    var existing = JSON.parse(str);
     res = extend(existing, res);
   }
-
   return res;
-}
-
-/**
- * Coerce `val` to an array
- *
- * @param  {*} val
- * @return {Array}
- */
-
-function arrayify(val) {
-  val = !Array.isArray(val) ? [val] : val;
-  return val.filter(Boolean);
 }
 
 /**
@@ -136,7 +125,7 @@ function toAuthors(pkg, options) {
   }
 
   if (opts.contributors && pkg.contributors && Array.isArray(pkg.contributors)) {
-    pkg.contributors.forEach(function (contributor) {
+    pkg.contributors.forEach(function(contributor) {
       authors.push(toAuthor(contributor));
     });
   }
