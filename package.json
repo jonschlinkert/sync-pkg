@@ -36,6 +36,9 @@
     "success-symbol": "^0.1.0",
     "write-json": "^0.2.1"
   },
+  "devDependencies": {
+    "mocha": "*"
+  },
   "keywords": [
     "bower.json",
     "package.json",
