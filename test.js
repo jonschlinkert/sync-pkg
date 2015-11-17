@@ -50,24 +50,34 @@ describe('toAuthor', function () {
 });
 
 describe('toAuthors', function () {
-    it('with author', function () {
-      var actual = sync.toAuthors({
-        author: 'Selina Kyle'
-      });
-      assert.deepEqual(actual, ['Selina Kyle']);
+  it('with author', function () {
+    var actual = sync.toAuthors({
+      author: 'Selina Kyle'
     });
-    it('with author and empty contributors', function () {
-      var actual = sync.toAuthors({
-        author: 'Selina Kyle',
-        contributors: []
-      });
-      assert.deepEqual(actual, ['Selina Kyle']);
+    assert.deepEqual(actual, ['Selina Kyle']);
+  });
+
+  it('with author and empty contributors', function () {
+    var actual = sync.toAuthors({
+      author: 'Selina Kyle',
+      contributors: []
     });
-    it('with author and contributors', function () {
-      var actual = sync.toAuthors({
-        author: 'Selina Kyle',
-        contributors: ['Harvey Dent']
-      });
-      assert.deepEqual(actual, ['Selina Kyle', 'Harvey Dent']);
+    assert.deepEqual(actual, ['Selina Kyle']);
+  });
+
+  it('with author and contributors', function () {
+    var actual = sync.toAuthors({
+      author: 'Selina Kyle',
+      contributors: ['Harvey Dent']
     });
+    assert.deepEqual(actual, ['Selina Kyle', 'Harvey Dent']);
+  });
+
+  it('should not add duplicate entries', function () {
+    var actual = sync.toAuthors({
+      author: 'Selina Kyle',
+      contributors: ['Selina Kyle']
+    });
+    assert.deepEqual(actual, ['Selina Kyle']);
+  });
 });

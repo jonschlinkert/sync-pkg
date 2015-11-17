@@ -5,6 +5,7 @@
 var fs = require('fs');
 var typeOf = require('kind-of');
 var arrayify = require('arrayify-compact');
+var unique = require('array-unique');
 var filter = require('filter-object');
 var omitEmpty = require('omit-empty');
 var writeJson = require('write-json');
@@ -129,7 +130,7 @@ function toAuthors(pkg, options) {
       authors.push(toAuthor(contributor));
     });
   }
-  return authors;
+  return unique(authors);
 }
 
 /**
