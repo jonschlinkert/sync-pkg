@@ -1,21 +1,6 @@
-#!/usr/bin/env node
-
 'use strict';
 
-var fs = require('fs');
-var typeOf = require('kind-of');
-var arrayify = require('arrayify-compact');
-var unique = require('array-unique');
-var filter = require('filter-object');
-var omitEmpty = require('omit-empty');
-var writeJson = require('write-json');
-var extend = require('extend-shallow');
-
-/**
- * Package files
- */
-
-var pkg = require('load-pkg')(process.cwd());
+var utils = require('./lib/utils');
 
 /**
  * Sync properties from package.json to bower.json.
@@ -25,123 +10,40 @@ var pkg = require('load-pkg')(process.cwd());
  * @return {Object}
  */
 
-function sync(config, patterns, options) {
-  if (typeOf(config) !== 'object' || ! config) {
-    options = patterns;
-    patterns = config;
-    config = pkg;
-  }
+module.exports = function(pkg, bower, options) {
+  var defaults = {remove: utils.remove, omitEmpty: true, knownOnly: true};
+  var opts = utils.extend(defaults, options);
+  var config = utils.extend({}, bower, pkg);
 
-  if (typeOf(patterns) === 'object') {
-    options = patterns;
-    patterns = null;
-  }
+  // pre-process `author` so we can use the built-in
+  // author normalizer in `normalize-pkg`
+  authors(config);
 
-  var opts = options || {};
-  patterns = patterns || ['*'];
-
-  opts.bowerFile = 'bower.json';
-  opts.bowerFileExists = fs.existsSync(opts.bowerFile);
-
-  // If bower.json doesn't exist yet, add one.
-  if (!opts.bowerFileExists && opts.nobower !== true) {
-    writeJson.sync('bower.json', {});
-  }
-
-  // normalize `main` to an array
-  config.main = arrayify(config.main);
-
-  // normalize `authors` to bower.json format
-  var authors = toAuthors(config);
-  if (authors) {
-    config.authors = authors;
-  }
-
-  return bowerKeys(config, patterns, opts);
-}
-
-function bowerKeys(config, patterns, options) {
-  var res = filter(config, [
-    'name',        // required
-    'description', // recommended
-    'repository',
-    'license',     // recommended
-    'homepage',
-    'authors',
-    'main',        // recommended
-    'ignore',      // recommended
-    'dependencies',
-    'devDependencies',
-    'keywords'     // recommended
-  ].concat(patterns), options);
-  res = options.empty ? res : omitEmpty(res);
-
-  if (options.bowerFileExists && options.extend) {
-    var str = fs.readFileSync(options.bowerFile);
-    var existing = JSON.parse(str);
-    res = extend(existing, res);
-  }
-  return res;
-}
-
-/**
- * Convert a Bower author to an npm person.
- *
- * See: <https://github.com/bower/bower.json-spec#authors>
- * See: <https://www.npmjs.org/doc/json.html#people-fields-author-contributors>
- *
- * @param  {String|Array} `author` A Bower author.
- * @return {String|Array}          An npm person.
- */
-
-function toAuthor(author) {
-  if (typeof author === 'object') {
-    var res = author;
-    if (author.url) {
-      res.homepage = author.url;
-      delete res.url;
-    }
-    return res;
-  }
-
-  if (typeof author === 'string') {
-    return author;
-  }
-}
-
-/**
- * Convert a npm `author` field or and/and `contributors`
- * field to a Bower `authors` field
- *
- * @param {Object} `pkg` package.json object
- * @return {Array}  An array of authors or null.
- */
-
-function toAuthors(pkg, options) {
-  var opts = options || {contributors: true};
-  var authors = [];
-
-  if (pkg.author) {
-    authors.push(toAuthor(pkg.author));
-  }
-
-  if (opts.contributors && pkg.contributors && Array.isArray(pkg.contributors)) {
-    pkg.contributors.forEach(function(contributor) {
-      authors.push(toAuthor(contributor));
+  // add custom fields to the schema
+  var normalizer = new utils.Normalizer(opts)
+    .field('private', 'boolean')
+    .field('ignore', ['array', 'string'], {
+      default: utils.ignore,
+      normalize: function(val, key, config) {
+        return utils.arrayify(val);
+      }
+    })
+    .field('main', ['array', 'string'], {
+      normalize: function(val, key, config) {
+        return utils.arrayify(val);
+      }
     });
-  }
-  return unique(authors);
+
+  normalizer.schema.omit('engines');
+  normalizer.schema.omit('scripts');
+  normalizer.schema.omit('author');
+  var res = normalizer.normalize(config);
+  return utils.omit(res, utils.remove);
 }
 
-/**
- * Expose `sync`
- */
-
-module.exports = sync;
-
-/**
- * Expose author methods
- */
-
-module.exports.toAuthor = toAuthor;
-module.exports.toAuthors = toAuthors;
+function authors(config) {
+  if (typeof config.authors === 'undefined') {
+    config.authors = utils.arrayify(config.author);
+    delete config.author;
+  }
+}

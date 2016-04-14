@@ -13,32 +13,39 @@
   },
   "license": "MIT",
   "files": [
+    "bin",
     "index.js",
-    "cli.js"
+    "lib"
   ],
   "main": "index.js",
+  "preferGlobal": true,
+  "bin": {
+    "sync-pkg": "bin/sync.js"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
   "scripts": {
     "test": "mocha"
   },
-  "preferGlobal": true,
-  "bin": {
-    "sync-pkg": "cli.js"
-  },
   "dependencies": {
-    "ansi-green": "^0.1.1",
-    "array-unique": "^0.2.1",
-    "arrayify-compact": "^0.2.0",
+    "bower-store": "^0.1.0",
+    "clone-deep": "^0.2.4",
+    "composer": "^0.11.3",
+    "diff": "^2.2.2",
     "extend-shallow": "^2.0.1",
-    "filter-object": "^2.1.0",
-    "kind-of": "^2.0.1",
-    "load-pkg": "^2.0.1",
+    "fs-exists-sync": "^0.1.0",
+    "lazy-cache": "^1.0.3",
+    "load-pkg": "^3.0.1",
+    "log-utils": "^0.1.0",
     "minimist": "^1.2.0",
-    "omit-empty": "^0.3.1",
-    "success-symbol": "^0.1.0",
-    "write-json": "^0.2.1"
+    "normalize-pkg": "^0.3.9",
+    "object.omit": "^2.0.0",
+    "question-cache": "^0.4.0"
   },
   "devDependencies": {
-    "mocha": "*"
+    "gulp-format-md": "^0.1.7",
+    "mocha": "^2.4.5"
   },
   "keywords": [
     "bower.json",
@@ -46,12 +53,27 @@
     "sync"
   ],
   "verb": {
+    "run": true,
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
     "related": {
       "list": [
-        "load-pkg",
         "filter-object",
+        "load-pkg",
         "omit-empty"
       ]
+    },
+    "reflinks": [
+      "verb"
+    ],
+    "lint": {
+      "reflinks": true
     }
   }
 }

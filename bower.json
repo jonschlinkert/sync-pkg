@@ -1,40 +1,62 @@
 {
   "name": "sync-pkg",
   "description": "CLI to sync only basic properties from package.json to bower.json.",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jonschlinkert/sync-pkg.git"
-  },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/jonschlinkert/sync-pkg/blob/master/LICENSE"
-  },
+  "version": "0.6.5",
   "homepage": "https://github.com/jonschlinkert/sync-pkg",
   "authors": [
-    {
-      "name": "Jon Schlinkert",
-      "homepage": "https://github.com/jonschlinkert"
-    },
-    {
-      "name": "Anders D. Johnson",
-      "homepage": "https://github.com/adjohnson916"
-    }
+    "Jon Schlinkert (https://github.com/jonschlinkert)"
+  ],
+  "contributors": [
+    "Anders D. Johnson (https://github.com/adjohnson916)"
+  ],
+  "repository": "jonschlinkert/sync-pkg",
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/sync-pkg/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "bin",
+    "index.js",
+    "lib"
   ],
   "main": [
     "index.js"
   ],
+  "bin": {
+    "sync-pkg": "bin/sync.js"
+  },
   "dependencies": {
-    "filter-object": "^1.1.2",
-    "kind-of": "^1.1.0",
-    "load-pkg": "^1.1.3",
-    "log-symbols": "^1.0.2",
-    "minimist": "^1.1.1",
-    "omit-empty": "^0.3.1",
-    "write-json": "^0.1.0"
+    "bower-store": "^0.1.0",
+    "clone-deep": "^0.2.4",
+    "composer": "^0.11.3",
+    "diff": "^2.2.2",
+    "extend-shallow": "^2.0.1",
+    "fs-exists-sync": "^0.1.0",
+    "lazy-cache": "^1.0.3",
+    "load-pkg": "^3.0.1",
+    "log-utils": "^0.1.0",
+    "minimist": "^1.2.0",
+    "normalize-pkg": "^0.3.9",
+    "object.omit": "^2.0.0",
+    "question-cache": "^0.4.0"
+  },
+  "devDependencies": {
+    "gulp-format-md": "^0.1.7",
+    "mocha": "^2.4.5"
   },
   "keywords": [
-    "package.json",
     "bower.json",
+    "package.json",
     "sync"
+  ],
+  "ignore": [
+    "actual",
+    "bower_components",
+    "fixtures",
+    "node_modules",
+    "temp",
+    "test",
+    "test.js",
+    "tmp"
   ]
 }
