@@ -39,7 +39,7 @@ module.exports = function(pkg, bower, options) {
   normalizer.schema.omit('author');
   var res = normalizer.normalize(config);
   return utils.omit(res, utils.remove);
-}
+};
 
 function authors(config) {
   if (typeof config.authors === 'undefined') {

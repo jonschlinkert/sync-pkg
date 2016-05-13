@@ -37,3 +37,4 @@ tmp
 
 ## PROJECT::SPECIFIC
 config/configuration.json
+coverage
