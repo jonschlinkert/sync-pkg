@@ -1,7 +1,7 @@
 {
   "name": "sync-pkg",
   "description": "CLI to sync only basic properties from package.json to bower.json.",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "homepage": "https://github.com/jonschlinkert/sync-pkg",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "contributors": [
@@ -39,7 +39,7 @@
     "load-pkg": "^3.0.1",
     "log-utils": "^0.2.1",
     "minimist": "^1.2.0",
-    "normalize-pkg": "^0.4.0",
+    "normalize-pkg": "^0.4.1",
     "object.omit": "^2.0.1",
     "question-cache": "^0.7.0"
   },
@@ -48,14 +48,16 @@
     "gulp-eslint": "^3.0.1",
     "gulp-format-md": "^0.1.11",
     "gulp-istanbul": "^1.1.1",
-    "gulp-mocha": "^4.1.0",
+    "gulp-mocha": "^3.0.0",
     "gulp-unused": "^0.2.1",
     "mocha": "^3.2.0"
   },
   "keywords": [
     "bower.json",
     "package.json",
+    "package",
     "pkg",
+    "synchronize",
     "sync"
   ],
   "verb": {
