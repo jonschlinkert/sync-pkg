@@ -1,13 +1,14 @@
 {
   "name": "sync-pkg",
   "description": "CLI to sync only basic properties from package.json to bower.json.",
-  "version": "0.6.5",
+  "version": "0.7.2",
   "homepage": "https://github.com/jonschlinkert/sync-pkg",
   "authors": [
     "Jon Schlinkert (https://github.com/jonschlinkert)"
   ],
   "contributors": [
-    "Anders D. Johnson (https://github.com/adjohnson916)"
+    "Anders D. Johnson (https://andrz.me)",
+    "Jon Schlinkert <jon.schlinkert@sellside.com> (http://twitter.com/jonschlinkert)"
   ],
   "repository": "jonschlinkert/sync-pkg",
   "bugs": {
@@ -27,31 +28,34 @@
   },
   "dependencies": {
     "bower-store": "^0.1.0",
-    "composer": "^0.12.0",
-    "diff": "^2.2.2",
+    "composer": "^0.14.0",
+    "diff": "^3.2.0",
     "extend-shallow": "^2.0.1",
     "fs-exists-sync": "^0.1.0",
-    "lazy-cache": "^2.0.1",
+    "lazy-cache": "^2.0.2",
     "load-pkg": "^3.0.1",
-    "log-utils": "^0.1.4",
+    "log-utils": "^0.2.1",
     "minimist": "^1.2.0",
-    "normalize-pkg": "^0.3.12",
-    "object.omit": "^2.0.0",
-    "question-cache": "^0.4.0"
+    "normalize-pkg": "^0.4.1",
+    "object.omit": "^2.0.1",
+    "question-cache": "^0.7.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-eslint": "^2.0.0",
-    "gulp-format-md": "^0.1.7",
-    "gulp-istanbul": "^0.10.4",
-    "gulp-mocha": "^2.2.0",
-    "gulp-unused": "^0.1.2",
-    "mocha": "^2.4.5"
+    "gulp-eslint": "^3.0.1",
+    "gulp-format-md": "^0.1.11",
+    "gulp-istanbul": "^1.1.1",
+    "gulp-mocha": "^3.0.0",
+    "gulp-unused": "^0.2.1",
+    "mocha": "^3.2.0"
   },
   "keywords": [
     "bower.json",
+    "package",
     "package.json",
-    "sync"
+    "pkg",
+    "sync",
+    "synchronize"
   ],
   "ignore": [
     "actual",
