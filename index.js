@@ -10,7 +10,7 @@ var utils = require('./lib/utils');
  * @return {Object}
  */
 
-module.exports = function(pkg, bower, options) {
+function sync(pkg, bower, options) {
   var defaults = {remove: utils.remove, omitEmpty: true, knownOnly: true};
   var opts = utils.extend(defaults, options);
   var config = utils.extend({}, bower, pkg);
@@ -47,3 +47,13 @@ function authors(config) {
     delete config.author;
   }
 }
+
+sync.bower = function() {
+  return sync.apply(null, arguments);
+};
+
+/**
+ * Expose `sync`
+ */
+
+module.exports = sync;
